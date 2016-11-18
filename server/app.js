@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const db = require('./db').db;
+const db = require('./models').db;
 const router = require('./routes');
 
 const app = express();
@@ -24,16 +24,22 @@ app.use(router);
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', router.index);
-app.get('/error', router.error);
+
+// app.get('/', router.error);
 
 
 /////////////////////////////////////////
 
+app.use(function(req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   console.error(err);
+  res.render('error');
 })
 
 db.sync()
