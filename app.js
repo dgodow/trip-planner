@@ -5,8 +5,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const db = require('./models').db;
-const router = require('./routes');
+const db = require('./server/models/index');
+const router = require('./server/routes');
 
 const app = express();
 
@@ -22,11 +22,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(router);
 
-app.use(express.static(path.join(__dirname, '../public')));
-
-
-// app.get('/', router.error);
-
+app.use(express.static(path.join(__dirname, './public/stylesheets')));
+app.use(express.static(path.join(__dirname, './node_modules/bootstrap/dist')));
+app.use(express.static(path.join(__dirname, './node_modules/jquery/dist')))
 
 /////////////////////////////////////////
 
